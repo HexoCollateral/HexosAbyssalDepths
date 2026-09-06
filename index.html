@@ -55,7 +55,7 @@
   .topbar-right {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     margin-left: auto;
   }
   .topbar-right a {
@@ -87,6 +87,8 @@
     border-right: 1px solid var(--border);
     overflow-y: auto;
     padding: 20px 0 40px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
   }
   .sidebar-item {
     display: block;
@@ -106,12 +108,12 @@
   .main { margin-left: var(--sidebar-w); flex: 1; display: flex; }
   .content { flex: 1; max-width: 780px; padding: 48px 56px 80px; }
   .toc {
-    width: 200px;
+    width: 210px;
     flex-shrink: 0;
     position: sticky;
-    top: calc(var(--topbar-h) + 24px);
+    top: calc(var(--topbar-h) + 28px);
     height: fit-content;
-    padding: 24px 20px 24px 0;
+    padding: 0 20px 0 0;
   }
   .toc-title {
     font-size: 11px;
@@ -119,20 +121,81 @@
     color: var(--text-muted);
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
+  .toc a {
+    display: block;
+    color: var(--text-muted);
+    padding: 4px 0 4px 12px;
+    border-left: 1px solid var(--border);
+    font-size: 12.5px;
+    line-height: 1.4;
+    transition: color 0.12s, border-color 0.12s;
+  }
+  .toc a:hover { color: var(--accent-purple); border-left-color: var(--accent-purple); }
   .content h1 {
     font-size: 32px;
     font-weight: 700;
     color: var(--text-heading);
     letter-spacing: -0.5px;
-    margin-bottom: 18px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .content h2 {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-top: 44px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .content h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-top: 24px;
+    margin-bottom: 6px;
   }
   .content p {
     color: var(--text);
     margin-bottom: 14px;
     max-width: 68ch;
   }
+  .content ul, .content ol {
+    padding-left: 22px;
+    margin-bottom: 14px;
+    max-width: 68ch;
+  }
+  .content li { margin-bottom: 5px; color: var(--text); }
+  .content code {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: var(--accent-cyan);
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+  .breadcrumb span { opacity: 0.4; }
+  .doc-block {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    max-width: 68ch;
+  }
+  .doc-block h3 { margin-top: 0; margin-bottom: 6px; font-size: 14.5px; color: var(--text-heading); }
+  .doc-block p { margin-bottom: 0; font-size: 13.5px; }
 </style>
 </head>
 <body>
@@ -155,11 +218,66 @@
 
   <main class="main">
     <div class="content">
+      <div class="breadcrumb"><span>⌂</span> <span>›</span> Introduction</div>
       <h1>Introduction</h1>
-      <p>Welcome to the official documentation for <strong>Hexo's Abyssal Depths</strong>. More content coming soon.</p>
+      <p>Welcome to the documentation page for Hexo's Abyssal Depths. This site provides all the necessary information regarding the building kit, game structure, setup instructions, and framework documentation.</p>
+
+      <h2 id="about-game">About the Game</h2>
+      <p>Hexo's Abyssal Depths is a tower-climbing obstacle game where players navigate through structured, skill-based challenges. The game is organized into three main area types:</p>
+      <ul>
+        <li><strong>Depths</strong> — The World 1 Areas</li>
+        <li><strong>Reaches</strong> — The World 2 Areas</li>
+        <li><strong>Sectors</strong> — The World 3 Areas</li>
+      </ul>
+      <p>Builders can use the official kit to design, test, and submit their own Towers for inclusion in the game.</p>
+
+      <h2 id="about-kit">About the Kit</h2>
+      <p>The Hexo's Abyssal Depths kit provides all the essential framework scripts, mechanics, and interactive client objects needed to build functional Towers, allowing creators to focus entirely on level design and gameplay structure.</p>
+
+      <h2 id="install">Installation Instructions</h2>
+      <p>The kit is distributed using a pre-made place file to make getting started as straightforward as possible. You can obtain it by:</p>
+      <ol>
+        <li>Opening the <a href="#">uncopylocked template place</a> on Roblox <strong>(Recommended)</strong></li>
+        <li>Downloading the <code>.rbxl</code> file from our <a href="#">GitHub releases page</a></li>
+      </ol>
+
+      <h2 id="update">Update Instructions</h2>
+      <p>If you are using a previous version of the kit, you can update to the latest version by visiting our <a href="#">GitHub releases page</a> and downloading the update kit associated with the latest release. Detailed instructions are included directly inside the update files.</p>
+
+      <h2 id="navigation">Website Navigation</h2>
+      <p>You can navigate this site using the navigation bars at the top and side of the screen:</p>
+      <ul>
+        <li><strong>Top Bar</strong> — Switch between main documentation hubs (Overview, Objects, API, and Framework).</li>
+        <li><strong>Left Sidebar</strong> — Browse through specific categories, mechanics, and object pages within the selected hub.</li>
+      </ul>
+
+      <h2 id="breakdown">Documentation Breakdown</h2>
+
+      <div class="doc-block">
+        <h3>Client Objects</h3>
+        <p>Contains documentation for every interactive gameplay object in the kit. Each page includes configuration settings, properties, description of behavior, and recommended usage within Towers.</p>
+      </div>
+
+      <div class="doc-block">
+        <h3>Global Configuration Documentation</h3>
+        <p>Covers universal settings and framework values that apply across entire Sectors or Reaches. These are documented separately for quick reference.</p>
+      </div>
+
+      <div class="doc-block">
+        <h3>API Documentation</h3>
+        <p>Provides information on the kit's underlying scripts and events. This section is designed for creators writing custom scripts or extending default mechanics, ensuring full compatibility with the main game framework.</p>
+      </div>
+
     </div>
+
     <div class="toc">
       <div class="toc-title">On this page</div>
+      <a href="#about-game">About the Game</a>
+      <a href="#about-kit">About the Kit</a>
+      <a href="#install">Installation Instructions</a>
+      <a href="#update">Update Instructions</a>
+      <a href="#navigation">Website Navigation</a>
+      <a href="#breakdown">Documentation Breakdown</a>
     </div>
   </main>
 </div>
