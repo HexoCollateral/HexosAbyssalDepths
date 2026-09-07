@@ -10,6 +10,7 @@
     --bg: #111318;
     --bg-sidebar: #0d0f13;
     --bg-surface: #181b22;
+    --bg-surface2: #1c2030;
     --border: #1f2330;
     --text: #c9cdd8;
     --text-muted: #636878;
@@ -26,7 +27,7 @@
     background: var(--bg);
     color: var(--text);
     font-size: 15px;
-    line-height: 1.65;
+    line-height: 1.7;
     min-height: 100vh;
   }
   a { color: var(--accent-blue); text-decoration: none; }
@@ -37,8 +38,10 @@
     top: 0; left: 0; right: 0;
     height: 2px;
     background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue), var(--accent-cyan));
-    z-index: 200;
+    z-index: 300;
   }
+
+  /* TOPBAR */
   .topbar {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -49,7 +52,7 @@
     align-items: center;
     padding: 0 20px;
     gap: 24px;
-    z-index: 100;
+    z-index: 200;
   }
   .topbar-logo img { height: 38px; width: auto; display: block; }
   .topbar-right {
@@ -77,6 +80,8 @@
     min-width: 160px;
   }
   .search-box kbd { font-size: 11px; margin-left: auto; opacity: 0.5; }
+
+  /* LAYOUT */
   .layout { display: flex; padding-top: var(--topbar-h); min-height: 100vh; }
 
   /* SIDEBAR */
@@ -88,7 +93,7 @@
     background: var(--bg-sidebar);
     border-right: 1px solid var(--border);
     overflow-y: auto;
-    padding: 16px 0 40px;
+    padding: 16px 0 60px;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
   }
@@ -113,80 +118,40 @@
     background: rgba(155,109,255,0.07);
     border-left-color: var(--accent-purple);
   }
-  .sidebar-item .arrow {
+  .arrow {
     font-size: 10px;
-    opacity: 0.45;
+    opacity: 0.4;
     transition: transform 0.2s;
     flex-shrink: 0;
+    margin-left: 6px;
   }
-  .sidebar-item.open .arrow { transform: rotate(90deg); }
+  .rotated { transform: rotate(90deg); }
 
-  .sidebar-sub {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.25s ease;
-  }
-  .sidebar-sub.open { max-height: 600px; }
+  .sub { overflow: hidden; max-height: 0; transition: max-height 0.25s ease; }
+  .sub.open { max-height: 800px; }
 
-  .sidebar-sub-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 6px 20px 6px 34px;
+  .sub .sidebar-item {
+    padding-left: 34px;
     font-size: 13px;
-    color: var(--text-muted);
-    cursor: pointer;
-    border-left: 2px solid transparent;
-    transition: color 0.12s, background 0.12s;
-    user-select: none;
   }
-  .sidebar-sub-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-  .sidebar-sub-item.active {
-    color: var(--accent-purple);
-    background: rgba(155,109,255,0.07);
-    border-left-color: var(--accent-purple);
-  }
-  .sidebar-sub-item .arrow {
-    font-size: 10px;
-    opacity: 0.45;
-    transition: transform 0.2s;
-  }
-  .sidebar-sub-item.open .arrow { transform: rotate(90deg); }
-
-  .sidebar-sub-sub {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.25s ease;
-  }
-  .sidebar-sub-sub.open { max-height: 300px; }
-
-  .sidebar-sub-sub-item {
-    display: block;
-    padding: 5px 20px 5px 50px;
+  .sub .sub .sidebar-item {
+    padding-left: 48px;
     font-size: 12.5px;
-    color: var(--text-muted);
-    cursor: pointer;
-    border-left: 2px solid transparent;
-    transition: color 0.12s, background 0.12s;
-  }
-  .sidebar-sub-sub-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-  .sidebar-sub-sub-item.active {
-    color: var(--accent-purple);
-    background: rgba(155,109,255,0.07);
-    border-left-color: var(--accent-purple);
   }
 
   /* MAIN */
-  .main { margin-left: var(--sidebar-w); flex: 1; display: flex; }
-  .content { flex: 1; max-width: 780px; padding: 48px 56px 80px; }
+  .main { margin-left: var(--sidebar-w); flex: 1; display: flex; min-width: 0; }
+  .content { flex: 1; max-width: 800px; padding: 44px 52px 100px; min-width: 0; }
 
+  /* TOC */
   .toc {
     width: 210px;
     flex-shrink: 0;
     position: sticky;
     top: calc(var(--topbar-h) + 28px);
     height: fit-content;
-    padding: 0 20px 0 0;
+    padding: 0 16px 0 0;
+    margin-top: 44px;
   }
   .toc-title {
     font-size: 11px;
@@ -199,28 +164,43 @@
   .toc a {
     display: block;
     color: var(--text-muted);
-    padding: 4px 0 4px 12px;
+    padding: 3px 0 3px 12px;
     border-left: 1px solid var(--border);
     font-size: 12.5px;
-    line-height: 1.4;
+    line-height: 1.45;
     transition: color 0.12s, border-color 0.12s;
+    margin-bottom: 1px;
   }
   .toc a:hover { color: var(--accent-purple); border-left-color: var(--accent-purple); }
 
-  /* PAGES */
+  /* PAGE VISIBILITY */
   .page { display: none; }
   .page.active { display: block; }
 
-  .content h1 {
-    font-size: 32px;
+  /* TYPOGRAPHY */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 26px;
+    flex-wrap: wrap;
+  }
+  .breadcrumb .sep { opacity: 0.35; }
+  .breadcrumb a { color: var(--text-muted); }
+  .breadcrumb a:hover { color: var(--accent-blue); }
+
+  h1 {
+    font-size: 30px;
     font-weight: 700;
     color: var(--text-heading);
-    letter-spacing: -0.5px;
+    letter-spacing: -0.4px;
     line-height: 1.2;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
-  .content h2 {
-    font-size: 19px;
+  h2 {
+    font-size: 18px;
     font-weight: 600;
     color: var(--text-heading);
     margin-top: 44px;
@@ -228,54 +208,178 @@
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
   }
-  .content p {
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-top: 26px;
+    margin-bottom: 7px;
+  }
+  p {
     color: var(--text);
-    margin-bottom: 14px;
-    max-width: 68ch;
+    margin-bottom: 13px;
+    max-width: 70ch;
   }
-  .content ul, .content ol {
+  ul, ol {
     padding-left: 22px;
-    margin-bottom: 14px;
-    max-width: 68ch;
+    margin-bottom: 13px;
+    max-width: 70ch;
   }
-  .content li { margin-bottom: 5px; color: var(--text); }
-  .content code {
+  li { margin-bottom: 5px; color: var(--text); }
+  code {
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 1px 6px;
     font-family: 'Fira Code', 'Consolas', monospace;
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--accent-cyan);
   }
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 28px;
-    flex-wrap: wrap;
+
+  /* ATTRIBUTE TABLE */
+  .attr-table {
+    width: 100%;
+    max-width: 70ch;
+    border-collapse: collapse;
+    margin: 16px 0 28px;
+    font-size: 13.5px;
   }
-  .breadcrumb span.sep { opacity: 0.4; }
-  .breadcrumb a { color: var(--text-muted); }
-  .breadcrumb a:hover { color: var(--accent-blue); }
+  .attr-table th {
+    text-align: left;
+    padding: 8px 14px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+    text-transform: uppercase;
+  }
+  .attr-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(31,35,48,0.7);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .attr-table tr:last-child td { border-bottom: none; }
+  .attr-table tr:hover td { background: rgba(255,255,255,0.015); }
+  .attr-table td:first-child { font-family: 'Fira Code','Consolas',monospace; font-size: 12.5px; color: var(--accent-cyan); white-space: nowrap; }
+  .attr-table td:nth-child(2) { color: var(--accent-purple); font-size: 12.5px; white-space: nowrap; }
+
+  /* TYPE BADGE */
+  .type-bool { color: #4fa3ff !important; }
+  .type-number { color: #f7b955 !important; }
+  .type-string { color: #7dce82 !important; }
+
+  /* CALLOUT */
+  .callout {
+    background: rgba(155,109,255,0.06);
+    border: 1px solid rgba(155,109,255,0.18);
+    border-radius: 7px;
+    padding: 13px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    max-width: 70ch;
+  }
+  .callout strong { color: var(--accent-purple); }
+  .callout.blue {
+    background: rgba(79,163,255,0.06);
+    border-color: rgba(79,163,255,0.18);
+  }
+  .callout.blue strong { color: var(--accent-blue); }
+  .callout.yellow {
+    background: rgba(247,185,85,0.06);
+    border-color: rgba(247,185,85,0.2);
+  }
+  .callout.yellow strong { color: #f7b955; }
+
+  /* OBJECT CARD GRID (overview) */
+  .object-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 18px 0 28px;
+    max-width: 70ch;
+  }
+  .object-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .object-card:hover {
+    border-color: var(--accent-purple);
+    background: rgba(155,109,255,0.05);
+  }
+  .object-card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-bottom: 5px;
+  }
+  .object-card-desc {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  /* KILLBRICK TYPE SECTIONS */
+  .kb-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    max-width: 70ch;
+  }
+  .kb-section h3 { margin-top: 0; }
+
+  /* DOC BLOCK */
   .doc-block {
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 18px 22px;
     margin-bottom: 14px;
-    max-width: 68ch;
+    max-width: 70ch;
   }
   .doc-block h3 { margin-top: 0; margin-bottom: 6px; font-size: 14.5px; color: var(--text-heading); }
   .doc-block p { margin-bottom: 0; font-size: 13.5px; }
 
-  .empty-state {
-    margin-top: 40px;
+  /* PAGE NAV */
+  .page-nav {
+    display: flex;
+    gap: 12px;
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+  .pnav-btn {
+    flex: 1;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .pnav-btn:hover { border-color: var(--accent-purple); }
+  .pnav-label { font-size: 11px; color: var(--text-muted); }
+  .pnav-title { font-size: 13.5px; font-weight: 500; color: var(--text-heading); }
+  .pnav-btn.right { text-align: right; }
+  .pnav-spacer { flex: 1; }
+
+  .empty-note {
     color: var(--text-muted);
-    font-size: 14px;
+    font-size: 13.5px;
     font-style: italic;
+    margin-top: 32px;
   }
 </style>
 </head>
@@ -293,272 +397,620 @@
 </header>
 
 <div class="layout">
-  <aside class="sidebar">
+<aside class="sidebar">
 
-    <div class="sidebar-item" id="nav-introduction" onclick="showPage('introduction')">Introduction</div>
+  <div class="sidebar-item" id="snav-introduction" onclick="go('introduction')">Introduction</div>
 
-    <!-- Client Objects dropdown + page nav -->
-    <div class="sidebar-item" id="nav-client-objects" onclick="handleClientObjects()">
-      Client Objects <span class="arrow">›</span>
+  <div class="sidebar-item" id="snav-client-objects" onclick="toggleAndGo('co-sub','client-objects',this)">
+    Client Objects <span class="arrow" id="arr-co">›</span>
+  </div>
+  <div class="sub" id="co-sub">
+    <div class="sidebar-item" id="snav-teleporter" onclick="go('teleporter')">Teleporter</div>
+    <div class="sidebar-item" id="snav-fading-platform" onclick="go('fading-platform')">Fading Platform</div>
+    <div class="sidebar-item" id="snav-button" onclick="go('button')">Button</div>
+    <div class="sidebar-item" id="snav-conveyor" onclick="go('conveyor')">Conveyor</div>
+    <div class="sidebar-item" id="snav-killbricks" onclick="go('killbricks')">Killbricks</div>
+    <div class="sidebar-item" id="snav-elevator" onclick="go('elevator')">Elevator</div>
+    <div class="sidebar-item" id="snav-modifiers" onclick="toggleAndGo('mod-sub','modifiers',this)">
+      Modifiers <span class="arrow" id="arr-mod">›</span>
     </div>
-    <div class="sidebar-sub" id="sub-client-objects">
-      <div class="sidebar-sub-item" onclick="showPage('teleporter')">Teleporter</div>
-      <div class="sidebar-sub-item" onclick="showPage('fading-platform')">Fading Platform</div>
-      <div class="sidebar-sub-item" onclick="showPage('button')">Button</div>
-      <div class="sidebar-sub-item" onclick="showPage('conveyor')">Conveyor</div>
-      <div class="sidebar-sub-item" onclick="showPage('killbricks')">Killbricks</div>
-      <div class="sidebar-sub-item" onclick="showPage('elevator')">Elevator</div>
-      <!-- Modifiers nested dropdown -->
-      <div class="sidebar-sub-item" id="nav-modifiers" onclick="handleModifiers(event)">
-        Modifiers <span class="arrow">›</span>
-      </div>
-      <div class="sidebar-sub-sub" id="sub-modifiers">
-        <div class="sidebar-sub-sub-item" onclick="showPage('speed-modifier')">Speed Modifier</div>
-        <div class="sidebar-sub-sub-item" onclick="showPage('jump-modifier')">Jump Modifier</div>
-        <div class="sidebar-sub-sub-item" onclick="showPage('gravity-modifier')">Gravity Modifier</div>
-      </div>
+    <div class="sub" id="mod-sub">
+      <div class="sidebar-item" id="snav-speed-modifier" onclick="go('speed-modifier')">Speed Modifier</div>
+      <div class="sidebar-item" id="snav-jump-modifier" onclick="go('jump-modifier')">Jump Modifier</div>
+      <div class="sidebar-item" id="snav-gravity-modifier" onclick="go('gravity-modifier')">Gravity Modifier</div>
     </div>
+  </div>
 
-  </aside>
+</aside>
 
-  <main class="main">
-    <div class="content">
+<main class="main">
+<div class="content">
 
-      <!-- INTRODUCTION -->
-      <div class="page active" id="page-introduction">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> Introduction</div>
-        <h1>Introduction</h1>
-        <p>Welcome to the documentation page for Hexo's Abyssal Depths. This site provides all the necessary information regarding the building kit, game structure, setup instructions, and framework documentation.</p>
+<!-- ═══════════════════════════════ INTRODUCTION ═══════════════════════════════ -->
+<div class="page active" id="page-introduction">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span>Introduction</div>
+  <h1>Introduction</h1>
+  <p>Welcome to the documentation page for Hexo's Abyssal Depths. This site provides all the necessary information regarding the building kit, game structure, setup instructions, and framework documentation.</p>
 
-        <h2 id="about-game">About the Game</h2>
-        <p>Hexo's Abyssal Depths is a tower-climbing obstacle game where players navigate through structured, skill-based challenges. The game is organized into three main area types:</p>
-        <ul>
-          <li><strong>Depths</strong> — The World 1 Areas</li>
-          <li><strong>Reaches</strong> — The World 2 Areas</li>
-          <li><strong>Sectors</strong> — The World 3 Areas</li>
-        </ul>
-        <p>Builders can use the official kit to design, test, and submit their own Towers for inclusion in the game.</p>
+  <h2 id="about-game">About the Game</h2>
+  <p>Hexo's Abyssal Depths is a tower-climbing obstacle game where players navigate through structured, skill-based challenges. The game is organized into three main area types:</p>
+  <ul>
+    <li><strong>Depths</strong> — The World 1 Areas</li>
+    <li><strong>Reaches</strong> — The World 2 Areas</li>
+    <li><strong>Sectors</strong> — The World 3 Areas</li>
+  </ul>
+  <p>Builders can use the official kit to design, test, and submit their own Towers for inclusion in the game.</p>
 
-        <h2 id="about-kit">About the Kit</h2>
-        <p>The Hexo's Abyssal Depths kit provides all the essential framework scripts, mechanics, and interactive client objects needed to build functional Towers, allowing creators to focus entirely on level design and gameplay structure.</p>
+  <h2 id="about-kit">About the Kit</h2>
+  <p>The Hexo's Abyssal Depths kit provides all the essential framework scripts, mechanics, and interactive client objects needed to build functional Towers, allowing creators to focus entirely on level design and gameplay structure.</p>
 
-        <h2 id="install">Installation Instructions</h2>
-        <p>The kit is distributed using a pre-made place file to make getting started as straightforward as possible. You can obtain it by:</p>
-        <ol>
-          <li>Opening the <a href="#">uncopylocked template place</a> on Roblox <strong>(Recommended)</strong></li>
-          <li>Downloading the <code>.rbxl</code> file from our <a href="#">GitHub releases page</a></li>
-        </ol>
+  <h2 id="install">Installation Instructions</h2>
+  <p>The kit is distributed using a pre-made place file to make getting started as straightforward as possible. You can obtain it by:</p>
+  <ol>
+    <li>Opening the <a href="#">uncopylocked template place</a> on Roblox <strong>(Recommended)</strong></li>
+    <li>Downloading the <code>.rbxl</code> file from our <a href="#">GitHub releases page</a></li>
+  </ol>
 
-        <h2 id="update">Update Instructions</h2>
-        <p>If you are using a previous version of the kit, you can update to the latest version by visiting our <a href="#">GitHub releases page</a> and downloading the update kit associated with the latest release. Detailed instructions are included directly inside the update files.</p>
+  <h2 id="update">Update Instructions</h2>
+  <p>If you are using a previous version of the kit, you can update to the latest version by visiting our <a href="#">GitHub releases page</a> and downloading the update kit associated with the latest release. Detailed instructions are included directly inside the update files.</p>
 
-        <h2 id="navigation">Website Navigation</h2>
-        <p>You can navigate this site using the navigation bars at the top and side of the screen:</p>
-        <ul>
-          <li><strong>Top Bar</strong> — Switch between main documentation hubs (Overview, Objects, API, and Framework).</li>
-          <li><strong>Left Sidebar</strong> — Browse through specific categories, mechanics, and object pages within the selected hub.</li>
-        </ul>
+  <h2 id="navigation">Website Navigation</h2>
+  <p>You can navigate this site using the navigation bars at the top and side of the screen:</p>
+  <ul>
+    <li><strong>Top Bar</strong> — Switch between main documentation hubs.</li>
+    <li><strong>Left Sidebar</strong> — Browse through specific categories, mechanics, and object pages within the selected hub.</li>
+  </ul>
 
-        <h2 id="breakdown">Documentation Breakdown</h2>
-        <div class="doc-block">
-          <h3>Client Objects</h3>
-          <p>Contains documentation for every interactive gameplay object in the kit. Each page includes configuration settings, properties, description of behavior, and recommended usage within Towers.</p>
-        </div>
-        <div class="doc-block">
-          <h3>Global Configuration Documentation</h3>
-          <p>Covers universal settings and framework values that apply across entire Sectors or Reaches. These are documented separately for quick reference.</p>
-        </div>
-        <div class="doc-block">
-          <h3>API Documentation</h3>
-          <p>Provides information on the kit's underlying scripts and events. This section is designed for creators writing custom scripts or extending default mechanics, ensuring full compatibility with the main game framework.</p>
-        </div>
-      </div>
+  <h2 id="breakdown">Documentation Breakdown</h2>
+  <div class="doc-block"><h3>Client Objects</h3><p>Contains documentation for every interactive gameplay object in the kit. Each page includes configuration settings, properties, description of behavior, and recommended usage within Towers.</p></div>
+  <div class="doc-block"><h3>Global Configuration Documentation</h3><p>Covers universal settings and framework values that apply across entire Sectors or Reaches. These are documented separately for quick reference.</p></div>
+  <div class="doc-block"><h3>API Documentation</h3><p>Provides information on the kit's underlying scripts and events. This section is designed for creators writing custom scripts or extending default mechanics, ensuring full compatibility with the main game framework.</p></div>
 
-      <!-- CLIENT OBJECTS -->
-      <div class="page" id="page-client-objects">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> Client Objects</div>
-        <h1>Client Objects</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- TELEPORTER -->
-      <div class="page" id="page-teleporter">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Teleporter</div>
-        <h1>Teleporter</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- FADING PLATFORM -->
-      <div class="page" id="page-fading-platform">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Fading Platform</div>
-        <h1>Fading Platform</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- BUTTON -->
-      <div class="page" id="page-button">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Button</div>
-        <h1>Button</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- CONVEYOR -->
-      <div class="page" id="page-conveyor">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Conveyor</div>
-        <h1>Conveyor</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- KILLBRICKS -->
-      <div class="page" id="page-killbricks">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Killbricks</div>
-        <h1>Killbricks</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- ELEVATOR -->
-      <div class="page" id="page-elevator">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Elevator</div>
-        <h1>Elevator</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- MODIFIERS -->
-      <div class="page" id="page-modifiers">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Modifiers</div>
-        <h1>Modifiers</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- SPEED MODIFIER -->
-      <div class="page" id="page-speed-modifier">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> <a href="#" onclick="showPage('modifiers')">Modifiers</a> <span class="sep">›</span> Speed Modifier</div>
-        <h1>Speed Modifier</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- JUMP MODIFIER -->
-      <div class="page" id="page-jump-modifier">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> <a href="#" onclick="showPage('modifiers')">Modifiers</a> <span class="sep">›</span> Jump Modifier</div>
-        <h1>Jump Modifier</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
-      <!-- GRAVITY MODIFIER -->
-      <div class="page" id="page-gravity-modifier">
-        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> <a href="#" onclick="showPage('modifiers')">Modifiers</a> <span class="sep">›</span> Gravity Modifier</div>
-        <h1>Gravity Modifier</h1>
-        <p class="empty-state">Content coming soon.</p>
-      </div>
-
+  <div class="page-nav">
+    <div class="pnav-spacer"></div>
+    <div class="pnav-btn right" onclick="go('client-objects')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Client Objects →</span>
     </div>
-
-    <div class="toc" id="toc-container">
-      <div class="toc-title">On this page</div>
-      <div id="toc-links">
-        <a href="#about-game">About the Game</a>
-        <a href="#about-kit">About the Kit</a>
-        <a href="#install">Installation Instructions</a>
-        <a href="#update">Update Instructions</a>
-        <a href="#navigation">Website Navigation</a>
-        <a href="#breakdown">Documentation Breakdown</a>
-      </div>
-    </div>
-  </main>
+  </div>
 </div>
 
+<!-- ═══════════════════════════════ CLIENT OBJECTS OVERVIEW ═══════════════════════════════ -->
+<div class="page" id="page-client-objects">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span>Client Objects</div>
+  <h1>Client Objects</h1>
+  <p>Client Objects are interactive parts placed inside your Tower model. Each object reads its behavior from a set of <strong>attributes</strong> configured directly on the part in Roblox Studio. The kit's client handler automatically detects and registers any part with the appropriate attribute set to <code>true</code>.</p>
+
+  <h2 id="overview-list">Objects</h2>
+  <div class="object-grid">
+    <div class="object-card" onclick="go('teleporter')">
+      <div class="object-card-name">Teleporter</div>
+      <div class="object-card-desc">Instantly moves the player to a linked destination part.</div>
+    </div>
+    <div class="object-card" onclick="go('fading-platform')">
+      <div class="object-card-name">Fading Platform</div>
+      <div class="object-card-desc">Fades out and disables collision after a player steps on it.</div>
+    </div>
+    <div class="object-card" onclick="go('button')">
+      <div class="object-card-name">Button</div>
+      <div class="object-card-desc">Toggles linked parts on and off when stepped on.</div>
+    </div>
+    <div class="object-card" onclick="go('conveyor')">
+      <div class="object-card-name">Conveyor</div>
+      <div class="object-card-desc">Pushes players along its forward axis at a set speed.</div>
+    </div>
+    <div class="object-card" onclick="go('killbricks')">
+      <div class="object-card-name">Killbricks</div>
+      <div class="object-card-desc">Four damage types — from chip damage to instant kill.</div>
+    </div>
+    <div class="object-card" onclick="go('elevator')">
+      <div class="object-card-name">Elevator</div>
+      <div class="object-card-desc">Carries the player upward and launches them on exit.</div>
+    </div>
+    <div class="object-card" onclick="go('modifiers')">
+      <div class="object-card-name">Modifiers</div>
+      <div class="object-card-desc">Alters player speed, jump power, or gravity on touch.</div>
+    </div>
+  </div>
+
+  <h2 id="how-attributes-work">How Attributes Work</h2>
+  <p>Every client object is controlled entirely through <strong>instance attributes</strong> set on the part in Studio. The primary attribute (e.g. <code>isTeleporter</code>, <code>isButton</code>) acts as the enable flag — the object will not function unless this is set to <code>true</code>. Additional attributes fine-tune the behavior.</p>
+  <div class="callout blue"><strong>Note:</strong> Attribute names are case-sensitive. Make sure they are spelled exactly as shown in each object's documentation.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('introduction')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Introduction</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('teleporter')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Teleporter →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ TELEPORTER ═══════════════════════════════ -->
+<div class="page" id="page-teleporter">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span>Teleporter</div>
+  <h1>Teleporter</h1>
+  <p>The Teleporter instantly moves a player from one part to a linked destination. It is made up of two parts — the <strong>Teleporter Part</strong> (the trigger) and the <strong>Destination Part</strong> (the landing zone) — linked by a matching ID pair.</p>
+
+  <h2 id="tp-how">How It Works</h2>
+  <p>When a player touches a part with <code>isTeleporter = true</code>, the system scans the workspace for a <code>BasePart</code> whose <code>TeleporterID</code> matches the teleporter's <code>TargetID</code>. If a match is found, the player's <code>HumanoidRootPart</code> is moved to that destination part, offset upward by 3.5 studs. A short debounce prevents double-teleporting.</p>
+
+  <h2 id="tp-attrs-main">Teleporter Part Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isTeleporter</td><td class="type-bool">boolean</td><td>—</td><td>Enables the teleporter. Must be <code>true</code> for the part to function.</td></tr>
+      <tr><td>TargetID</td><td class="type-string">string / number</td><td>—</td><td>The ID this teleporter will search for. Must match a destination part's <code>TeleporterID</code>.</td></tr>
+      <tr><td>PreserveVelocity</td><td class="type-bool">boolean</td><td>false</td><td>If <code>true</code>, the player keeps their current velocity after teleporting. If <code>false</code>, velocity is zeroed out on arrival.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="tp-attrs-dest">Destination Part Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>TeleporterID</td><td class="type-string">string / number</td><td>—</td><td>The ID of this destination. When this matches a teleporter's <code>TargetID</code>, players will be sent here.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout"><strong>Tip:</strong> IDs are compared as strings, so <code>1</code> and <code>"1"</code> will match. Keep IDs unique across your Tower to avoid sending players to the wrong destination.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('client-objects')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Client Objects</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('fading-platform')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Fading Platform →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ FADING PLATFORM ═══════════════════════════════ -->
+<div class="page" id="page-fading-platform">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span>Fading Platform</div>
+  <h1>Fading Platform</h1>
+  <p>A Fading Platform disappears after a player steps on it, then regenerates after a set delay. A <strong>SelectionBox</strong> is automatically added to the part to give players a visual cue — it shifts from black to red as the platform fades.</p>
+
+  <h2 id="fp-how">How It Works</h2>
+  <p>On touch, the platform tweens its transparency to <code>1</code> over the duration defined by <code>FadeSpeed</code>. Once fully transparent, collision is disabled. After <code>RegenDelay</code> seconds, the platform restores its original transparency and re-enables collision. A debounce prevents the fade from re-triggering mid-cycle.</p>
+
+  <h2 id="fp-attrs">Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isFadingPlatform</td><td class="type-bool">boolean</td><td>—</td><td>Enables fading behavior. Must be <code>true</code> for the part to function.</td></tr>
+      <tr><td>FadeSpeed</td><td class="type-number">number</td><td>1.5</td><td>How long in seconds it takes for the platform to fully fade out.</td></tr>
+      <tr><td>RegenDelay</td><td class="type-number">number</td><td>3</td><td>How long in seconds the platform remains gone before regenerating.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout yellow"><strong>Note:</strong> The default <code>FadeSpeed</code> in the module is <code>1.5</code> seconds. The kit description lists <code>3</code> as the default — if no attribute is set, the module will use <code>1.5</code>. Set the attribute explicitly to control this.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('teleporter')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Teleporter</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('button')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Button →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ BUTTON ═══════════════════════════════ -->
+<div class="page" id="page-button">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span>Button</div>
+  <h1>Button</h1>
+  <p>The Button physically depresses when stepped on and toggles linked parts — making them solid or passthrough. It consists of a <strong>Button Part</strong> and one or more <strong>target parts</strong> that respond to it.</p>
+
+  <h2 id="btn-how">How It Works</h2>
+  <p>When a player touches a part with <code>isButton = true</code>, the button tweens downward to simulate being pressed. The system then scans the workspace for all parts with <code>ButtonEnabled = true</code> whose <code>ButtonID</code> matches the button's <code>ButtonID</code>. Each matching part toggles its <code>CanCollide</code> and <code>Transparency</code>. Unless <code>OneTimeUse</code> is set, the button pops back up after <code>Delay</code> seconds, ready to be pressed again.</p>
+
+  <h2 id="btn-attrs">Button Part Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isButton</td><td class="type-bool">boolean</td><td>—</td><td>Enables button behavior. Must be <code>true</code> for the part to function.</td></tr>
+      <tr><td>ButtonID</td><td class="type-string">string / number</td><td>—</td><td>Defines which target parts this button toggles. Matched against target parts' <code>ButtonID</code>.</td></tr>
+      <tr><td>Delay</td><td class="type-number">number</td><td>0.5</td><td>Time in seconds between presses before the button resets and can be used again.</td></tr>
+      <tr><td>OneTimeUse</td><td class="type-bool">boolean</td><td>false</td><td>If <code>true</code>, the button activates once and never resets.</td></tr>
+      <tr><td>TweenSpeed</td><td class="type-number">number</td><td>0.2</td><td>How long in seconds the press and release animations take.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="btn-target-attrs">Target Part Attributes</h2>
+  <p>Any part in the workspace can be made into a button target by adding these two attributes.</p>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>ButtonEnabled</td><td class="type-bool">boolean</td><td>—</td><td>Marks this part as a button-controlled object. Must be <code>true</code> to be toggled.</td></tr>
+      <tr><td>ButtonID</td><td class="type-string">string / number</td><td>—</td><td>The ID of the button that controls this part. Must match the triggering button's <code>ButtonID</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout"><strong>Tip:</strong> If <code>ButtonID</code> is not set on either the button or the target, all <code>ButtonEnabled</code> parts in the workspace will be toggled simultaneously.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('fading-platform')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Fading Platform</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('conveyor')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Conveyor →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ CONVEYOR ═══════════════════════════════ -->
+<div class="page" id="page-conveyor">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span>Conveyor</div>
+  <h1>Conveyor</h1>
+  <p>The Conveyor applies a constant linear velocity along the part's <strong>forward (LookVector)</strong> axis, pushing any player standing on it in that direction.</p>
+
+  <h2 id="conv-how">How It Works</h2>
+  <p>On registration, the module reads the <code>Speed</code> attribute and sets the part's <code>AssemblyLinearVelocity</code> to <code>part.CFrame.LookVector * Speed</code>. A listener on the <code>Speed</code> attribute updates the velocity immediately if the value is changed at runtime.</p>
+
+  <h2 id="conv-attrs">Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isConveyor</td><td class="type-bool">boolean</td><td>—</td><td>Enables conveyor behavior. Must be <code>true</code> for the part to function.</td></tr>
+      <tr><td>Speed</td><td class="type-number">number</td><td>20</td><td>The velocity applied along the part's LookVector in studs per second. Negative values reverse direction.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout blue"><strong>Direction:</strong> The conveyor moves players along the part's <strong>front face (LookVector)</strong>. Rotate the part in Studio to control which direction it pushes.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('button')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Button</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('killbricks')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Killbricks →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ KILLBRICKS ═══════════════════════════════ -->
+<div class="page" id="page-killbricks">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span>Killbricks</div>
+  <h1>Killbricks</h1>
+  <p>Killbricks deal damage to players on touch. There are four distinct types, each identified by its own enable attribute. A debounce of <strong>0.4 seconds</strong> prevents multiple damage ticks from a single contact. All killbrick types automatically destroy any <code>ForceField</code> on the player before applying damage.</p>
+
+  <h2 id="kb-types">Types</h2>
+
+  <div class="kb-section">
+    <h3>Killbrick</h3>
+    <p>Deals <strong>5 damage</strong> per touch. Standard light-damage hazard.</p>
+    <table class="attr-table">
+      <thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>isKillbrick</td><td class="type-bool">boolean</td><td>Enables killbrick behavior. Deals 5 damage on touch.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="kb-section">
+    <h3>Ouchbrick</h3>
+    <p>Deals <strong>20 damage</strong> per touch. Higher damage, same debounce window.</p>
+    <table class="attr-table">
+      <thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>isOuchbrick</td><td class="type-bool">boolean</td><td>Enables ouchbrick behavior. Deals 20 damage on touch.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="kb-section">
+    <h3>InstaKillbrick</h3>
+    <p>Sets the player's health directly to <strong>0</strong> on touch — bypasses the debounce check.</p>
+    <table class="attr-table">
+      <thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>isInstaKillbrick</td><td class="type-bool">boolean</td><td>Enables instakill behavior. Immediately kills the player on touch.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="kb-section">
+    <h3>CustomKillbrick</h3>
+    <p>Deals a configurable amount of damage per touch.</p>
+    <table class="attr-table">
+      <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>isCustomKillbrick</td><td class="type-bool">boolean</td><td>—</td><td>Enables custom killbrick behavior.</td></tr>
+        <tr><td>Damage</td><td class="type-number">number</td><td>5</td><td>The amount of damage dealt per touch.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout yellow"><strong>Note:</strong> Only one killbrick type attribute should be set to <code>true</code> on a single part. If multiple are set, <code>isInstaKillbrick</code> takes priority, followed by <code>isKillbrick</code>, <code>isOuchbrick</code>, then <code>isCustomKillbrick</code>.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('conveyor')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Conveyor</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('elevator')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Elevator →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ ELEVATOR ═══════════════════════════════ -->
+<div class="page" id="page-elevator">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span>Elevator</div>
+  <h1>Elevator</h1>
+  <p>The Elevator carries a player upward while they are standing inside the part's bounding box. When the player exits the top, they receive a burst of upward velocity — a launch — whose strength is controlled by <code>LaunchSpeed</code>.</p>
+
+  <h2 id="elev-how">How It Works</h2>
+  <p>Every frame the system checks whether the player's <code>HumanoidRootPart</code> is inside any registered elevator part using a local-space bounding box test. If inside, the player's <code>AssemblyLinearVelocity</code> is set to the elevator's <code>UpVector * Speed</code> plus their horizontal walk velocity clamped to <code>HorizontalSpeed</code>. The moment the player exits, if <code>LaunchSpeed</code> is greater than 0, a single burst of velocity is applied upward.</p>
+
+  <h2 id="elev-attrs">Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isElevator</td><td class="type-bool">boolean</td><td>—</td><td>Enables elevator behavior. Must be <code>true</code> for the part to function.</td></tr>
+      <tr><td>Speed</td><td class="type-number">number</td><td>15</td><td>How fast the player is moved upward while inside the elevator, in studs per second.</td></tr>
+      <tr><td>HorizontalSpeed</td><td class="type-number">number</td><td>0</td><td>Maximum horizontal movement speed while inside the elevator. Defaults to <code>0</code>, locking horizontal movement unless set.</td></tr>
+      <tr><td>LaunchSpeed</td><td class="type-number">number</td><td>200</td><td>The upward velocity burst applied to the player the moment they exit the top of the elevator. Set to <code>0</code> to disable the launch.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout blue"><strong>Orientation:</strong> The elevator moves players along the part's <strong>UpVector</strong>. Tilting the part will change the direction of travel.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('killbricks')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Killbricks</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('modifiers')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Modifiers →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ MODIFIERS OVERVIEW ═══════════════════════════════ -->
+<div class="page" id="page-modifiers">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span>Modifiers</div>
+  <h1>Modifiers</h1>
+  <p>Modifiers change a player's stats — walk speed, jump power, or gravity — when touched. Each modifier type also has a paired <strong>Canceller</strong> that resets that stat back to its default value.</p>
+
+  <h2 id="mod-types">Modifier Types</h2>
+  <div class="object-grid">
+    <div class="object-card" onclick="go('speed-modifier')">
+      <div class="object-card-name">Speed Modifier</div>
+      <div class="object-card-desc">Changes the player's WalkSpeed on touch.</div>
+    </div>
+    <div class="object-card" onclick="go('jump-modifier')">
+      <div class="object-card-name">Jump Modifier</div>
+      <div class="object-card-desc">Changes the player's JumpPower on touch.</div>
+    </div>
+    <div class="object-card" onclick="go('gravity-modifier')">
+      <div class="object-card-name">Gravity Modifier</div>
+      <div class="object-card-desc">Changes the workspace Gravity on touch.</div>
+    </div>
+  </div>
+
+  <h2 id="mod-cancellers">Cancellers</h2>
+  <p>Every modifier type has a corresponding Canceller that resets the stat to its Roblox default. Cancellers use the same part setup — just set the canceller attribute to <code>true</code> instead of the booster attribute.</p>
+  <table class="attr-table">
+    <thead><tr><th>Canceller Attribute</th><th>Resets</th><th>Default Value</th></tr></thead>
+    <tbody>
+      <tr><td>isSpeedCanceller</td><td>WalkSpeed</td><td>16</td></tr>
+      <tr><td>isJumpCanceller</td><td>JumpPower / JumpHeight</td><td>50 / 7.2</td></tr>
+      <tr><td>isGravityCanceller</td><td>Workspace.Gravity</td><td>196.2</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('elevator')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Elevator</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('speed-modifier')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Speed Modifier →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SPEED MODIFIER ═══════════════════════════════ -->
+<div class="page" id="page-speed-modifier">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span><a href="#" onclick="go('modifiers')">Modifiers</a><span class="sep">›</span>Speed Modifier</div>
+  <h1>Speed Modifier</h1>
+  <p>Changes the player's <code>WalkSpeed</code> when touched. Use the paired <strong>Speed Canceller</strong> (<code>isSpeedCanceller</code>) to reset the player's speed back to the Roblox default of <code>16</code>.</p>
+
+  <h2 id="sm-attrs">Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isSpeedBooster</td><td class="type-bool">boolean</td><td>—</td><td>Enables speed modifier behavior. Must be <code>true</code> to apply a speed change.</td></tr>
+      <tr><td>Speed</td><td class="type-number">number</td><td>32</td><td>The WalkSpeed value applied to the player on touch.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="sm-cancel">Canceller</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isSpeedCanceller</td><td class="type-bool">boolean</td><td>Resets the player's WalkSpeed to the default value of <code>16</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('modifiers')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Modifiers</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('jump-modifier')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Jump Modifier →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ JUMP MODIFIER ═══════════════════════════════ -->
+<div class="page" id="page-jump-modifier">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span><a href="#" onclick="go('modifiers')">Modifiers</a><span class="sep">›</span>Jump Modifier</div>
+  <h1>Jump Modifier</h1>
+  <p>Changes the player's jump power when touched. The module checks <code>Humanoid.UseJumpPower</code> — if enabled it sets <code>JumpPower</code>, otherwise it sets <code>JumpHeight</code>. Use the paired <strong>Jump Canceller</strong> (<code>isJumpCanceller</code>) to reset.</p>
+
+  <h2 id="jm-attrs">Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isJumpBooster</td><td class="type-bool">boolean</td><td>—</td><td>Enables jump modifier behavior. Must be <code>true</code> to apply a jump change.</td></tr>
+      <tr><td>JumpPower</td><td class="type-number">number</td><td>100</td><td>The JumpPower value applied when <code>UseJumpPower</code> is enabled on the Humanoid.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="jm-cancel">Canceller</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isJumpCanceller</td><td class="type-bool">boolean</td><td>Resets JumpPower to <code>50</code> or JumpHeight to <code>7.2</code> depending on the Humanoid setting.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('speed-modifier')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Speed Modifier</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('gravity-modifier')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Gravity Modifier →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ GRAVITY MODIFIER ═══════════════════════════════ -->
+<div class="page" id="page-gravity-modifier">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span><a href="#" onclick="go('client-objects')">Client Objects</a><span class="sep">›</span><a href="#" onclick="go('modifiers')">Modifiers</a><span class="sep">›</span>Gravity Modifier</div>
+  <h1>Gravity Modifier</h1>
+  <p>Changes <code>workspace.Gravity</code> when touched. Because gravity is a workspace-level value, this affects <strong>all players</strong> in the game simultaneously. Use the paired <strong>Gravity Canceller</strong> (<code>isGravityCanceller</code>) to restore default gravity.</p>
+
+  <h2 id="gm-attrs">Attributes</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isGravityBooster</td><td class="type-bool">boolean</td><td>—</td><td>Enables gravity modifier behavior. Must be <code>true</code> to apply a gravity change.</td></tr>
+      <tr><td>Gravity</td><td class="type-number">number</td><td>50</td><td>The workspace.Gravity value applied on touch. Roblox default is <code>196.2</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="gm-cancel">Canceller</h2>
+  <table class="attr-table">
+    <thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>isGravityCanceller</td><td class="type-bool">boolean</td><td>Resets workspace.Gravity to the Roblox default of <code>196.2</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout yellow"><strong>Warning:</strong> Gravity is global. Placing multiple Gravity Modifiers with different values in the same Tower can cause unpredictable behavior if players trigger them in different orders.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('jump-modifier')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Jump Modifier</span>
+    </div>
+    <div class="pnav-spacer"></div>
+  </div>
+</div>
+
+</div><!-- end .content -->
+
+<!-- TOC -->
+<div class="toc" id="toc-panel">
+  <div class="toc-title">On this page</div>
+  <div id="toc-links"></div>
+</div>
+
+</main>
+</div><!-- end .layout -->
+
 <script>
-  let clientObjectsOpen = false;
-  let modifiersOpen = false;
+const tocData = {
+  'introduction':     [['about-game','About the Game'],['about-kit','About the Kit'],['install','Installation Instructions'],['update','Update Instructions'],['navigation','Website Navigation'],['breakdown','Documentation Breakdown']],
+  'client-objects':   [['overview-list','Objects'],['how-attributes-work','How Attributes Work']],
+  'teleporter':       [['tp-how','How It Works'],['tp-attrs-main','Teleporter Part Attributes'],['tp-attrs-dest','Destination Part Attributes']],
+  'fading-platform':  [['fp-how','How It Works'],['fp-attrs','Attributes']],
+  'button':           [['btn-how','How It Works'],['btn-attrs','Button Part Attributes'],['btn-target-attrs','Target Part Attributes']],
+  'conveyor':         [['conv-how','How It Works'],['conv-attrs','Attributes']],
+  'killbricks':       [['kb-types','Types']],
+  'elevator':         [['elev-how','How It Works'],['elev-attrs','Attributes']],
+  'modifiers':        [['mod-types','Modifier Types'],['mod-cancellers','Cancellers']],
+  'speed-modifier':   [['sm-attrs','Attributes'],['sm-cancel','Canceller']],
+  'jump-modifier':    [['jm-attrs','Attributes'],['jm-cancel','Canceller']],
+  'gravity-modifier': [['gm-attrs','Attributes'],['gm-cancel','Canceller']],
+};
 
-  function clearAllActive() {
-    document.querySelectorAll('.sidebar-item, .sidebar-sub-item, .sidebar-sub-sub-item').forEach(el => {
-      el.classList.remove('active');
-    });
+const subStates = { 'co-sub': false, 'mod-sub': false };
+
+function go(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-' + id);
+  if (pg) pg.classList.add('active');
+
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+  const sn = document.getElementById('snav-' + id);
+  if (sn) sn.classList.add('active');
+
+  const links = tocData[id] || [];
+  document.getElementById('toc-links').innerHTML = links.map(([anchor, label]) =>
+    `<a href="#${anchor}">${label}</a>`
+  ).join('');
+
+  if (['teleporter','fading-platform','button','conveyor','killbricks','elevator','modifiers','speed-modifier','jump-modifier','gravity-modifier','client-objects'].includes(id)) {
+    openSub('co-sub','arr-co');
+  }
+  if (['speed-modifier','jump-modifier','gravity-modifier'].includes(id)) {
+    openSub('mod-sub','arr-mod');
   }
 
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const target = document.getElementById('page-' + id);
-    if (target) target.classList.add('active');
-    document.getElementById('toc-links').innerHTML = '';
-    window.scrollTo({top: 0, behavior: 'smooth'});
+  window.scrollTo({top:0, behavior:'smooth'});
+}
 
-    clearAllActive();
+function openSub(subId, arrId) {
+  const sub = document.getElementById(subId);
+  const arr = document.getElementById(arrId);
+  if (sub) sub.classList.add('open');
+  if (arr) arr.classList.add('rotated');
+  subStates[subId] = true;
+}
 
-    if (id === 'introduction') {
-      document.getElementById('nav-introduction').classList.add('active');
-      document.getElementById('toc-links').innerHTML = `
-        <a href="#about-game">About the Game</a>
-        <a href="#about-kit">About the Kit</a>
-        <a href="#install">Installation Instructions</a>
-        <a href="#update">Update Instructions</a>
-        <a href="#navigation">Website Navigation</a>
-        <a href="#breakdown">Documentation Breakdown</a>
-      `;
-    } else if (id === 'client-objects') {
-      document.getElementById('nav-client-objects').classList.add('active');
-    } else if (id === 'modifiers') {
-      document.querySelectorAll('.sidebar-sub-item').forEach(el => {
-        if (el.textContent.trim().startsWith('Modifiers')) el.classList.add('active');
-      });
-      ensureClientOpen();
-      ensureModifiersOpen();
-    } else if (['speed-modifier','jump-modifier','gravity-modifier'].includes(id)) {
-      document.querySelectorAll('.sidebar-sub-sub-item').forEach(el => {
-        const map = {'speed-modifier':'Speed Modifier','jump-modifier':'Jump Modifier','gravity-modifier':'Gravity Modifier'};
-        if (el.textContent.trim() === map[id]) el.classList.add('active');
-      });
-      ensureClientOpen();
-      ensureModifiersOpen();
-    } else {
-      const labelMap = {
-        'teleporter':'Teleporter','fading-platform':'Fading Platform','button':'Button',
-        'conveyor':'Conveyor','killbricks':'Killbricks','elevator':'Elevator'
-      };
-      document.querySelectorAll('.sidebar-sub-item').forEach(el => {
-        if (el.textContent.trim() === labelMap[id]) el.classList.add('active');
-      });
-      ensureClientOpen();
-    }
-  }
+function toggleAndGo(subId, pageId, el) {
+  const sub = document.getElementById(subId);
+  const arrId = subId === 'co-sub' ? 'arr-co' : 'arr-mod';
+  const arr = document.getElementById(arrId);
+  const isOpen = subStates[subId];
 
-  function ensureClientOpen() {
-    const sub = document.getElementById('sub-client-objects');
-    const nav = document.getElementById('nav-client-objects');
+  if (isOpen) {
+    sub.classList.remove('open');
+    arr.classList.remove('rotated');
+    subStates[subId] = false;
+  } else {
     sub.classList.add('open');
-    nav.classList.add('open');
-    clientObjectsOpen = true;
+    arr.classList.add('rotated');
+    subStates[subId] = true;
   }
 
-  function ensureModifiersOpen() {
-    const sub = document.getElementById('sub-modifiers');
-    const nav = document.getElementById('nav-modifiers');
-    sub.classList.add('open');
-    nav.classList.add('open');
-    modifiersOpen = true;
-  }
+  go(pageId);
+}
 
-  function handleClientObjects() {
-    clientObjectsOpen = !clientObjectsOpen;
-    const sub = document.getElementById('sub-client-objects');
-    const nav = document.getElementById('nav-client-objects');
-    sub.classList.toggle('open', clientObjectsOpen);
-    nav.classList.toggle('open', clientObjectsOpen);
-    showPage('client-objects');
-  }
-
-  function handleModifiers(e) {
-    e.stopPropagation();
-    modifiersOpen = !modifiersOpen;
-    const sub = document.getElementById('sub-modifiers');
-    const nav = document.getElementById('nav-modifiers');
-    sub.classList.toggle('open', modifiersOpen);
-    nav.classList.toggle('open', modifiersOpen);
-    showPage('modifiers');
-  }
-
-  document.getElementById('nav-introduction').classList.add('active');
+go('introduction');
 </script>
 
 </body>
