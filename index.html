@@ -78,6 +78,8 @@
   }
   .search-box kbd { font-size: 11px; margin-left: auto; opacity: 0.5; }
   .layout { display: flex; padding-top: var(--topbar-h); min-height: 100vh; }
+
+  /* SIDEBAR */
   .sidebar {
     position: fixed;
     top: var(--topbar-h); left: 0;
@@ -86,18 +88,24 @@
     background: var(--bg-sidebar);
     border-right: 1px solid var(--border);
     overflow-y: auto;
-    padding: 20px 0 40px;
+    padding: 16px 0 40px;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
   }
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
   .sidebar-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 7px 20px;
     font-size: 13.5px;
     color: var(--text-muted);
     cursor: pointer;
     border-left: 2px solid transparent;
     transition: color 0.12s, background 0.12s;
+    user-select: none;
   }
   .sidebar-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
   .sidebar-item.active {
@@ -105,8 +113,73 @@
     background: rgba(155,109,255,0.07);
     border-left-color: var(--accent-purple);
   }
+  .sidebar-item .arrow {
+    font-size: 10px;
+    opacity: 0.45;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .sidebar-item.open .arrow { transform: rotate(90deg); }
+
+  .sidebar-sub {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease;
+  }
+  .sidebar-sub.open { max-height: 600px; }
+
+  .sidebar-sub-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 20px 6px 34px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: color 0.12s, background 0.12s;
+    user-select: none;
+  }
+  .sidebar-sub-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .sidebar-sub-item.active {
+    color: var(--accent-purple);
+    background: rgba(155,109,255,0.07);
+    border-left-color: var(--accent-purple);
+  }
+  .sidebar-sub-item .arrow {
+    font-size: 10px;
+    opacity: 0.45;
+    transition: transform 0.2s;
+  }
+  .sidebar-sub-item.open .arrow { transform: rotate(90deg); }
+
+  .sidebar-sub-sub {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease;
+  }
+  .sidebar-sub-sub.open { max-height: 300px; }
+
+  .sidebar-sub-sub-item {
+    display: block;
+    padding: 5px 20px 5px 50px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: color 0.12s, background 0.12s;
+  }
+  .sidebar-sub-sub-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+  .sidebar-sub-sub-item.active {
+    color: var(--accent-purple);
+    background: rgba(155,109,255,0.07);
+    border-left-color: var(--accent-purple);
+  }
+
+  /* MAIN */
   .main { margin-left: var(--sidebar-w); flex: 1; display: flex; }
   .content { flex: 1; max-width: 780px; padding: 48px 56px 80px; }
+
   .toc {
     width: 210px;
     flex-shrink: 0;
@@ -133,6 +206,11 @@
     transition: color 0.12s, border-color 0.12s;
   }
   .toc a:hover { color: var(--accent-purple); border-left-color: var(--accent-purple); }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
   .content h1 {
     font-size: 32px;
     font-weight: 700;
@@ -149,13 +227,6 @@
     margin-bottom: 12px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
-  }
-  .content h3 {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-heading);
-    margin-top: 24px;
-    margin-bottom: 6px;
   }
   .content p {
     color: var(--text);
@@ -184,8 +255,11 @@
     font-size: 13px;
     color: var(--text-muted);
     margin-bottom: 28px;
+    flex-wrap: wrap;
   }
-  .breadcrumb span { opacity: 0.4; }
+  .breadcrumb span.sep { opacity: 0.4; }
+  .breadcrumb a { color: var(--text-muted); }
+  .breadcrumb a:hover { color: var(--accent-blue); }
   .doc-block {
     background: var(--bg-surface);
     border: 1px solid var(--border);
@@ -196,6 +270,13 @@
   }
   .doc-block h3 { margin-top: 0; margin-bottom: 6px; font-size: 14.5px; color: var(--text-heading); }
   .doc-block p { margin-bottom: 0; font-size: 13.5px; }
+
+  .empty-state {
+    margin-top: 40px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-style: italic;
+  }
 </style>
 </head>
 <body>
@@ -213,74 +294,272 @@
 
 <div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-item active">Introduction</div>
+
+    <div class="sidebar-item" id="nav-introduction" onclick="showPage('introduction')">Introduction</div>
+
+    <!-- Client Objects dropdown + page nav -->
+    <div class="sidebar-item" id="nav-client-objects" onclick="handleClientObjects()">
+      Client Objects <span class="arrow">›</span>
+    </div>
+    <div class="sidebar-sub" id="sub-client-objects">
+      <div class="sidebar-sub-item" onclick="showPage('teleporter')">Teleporter</div>
+      <div class="sidebar-sub-item" onclick="showPage('fading-platform')">Fading Platform</div>
+      <div class="sidebar-sub-item" onclick="showPage('button')">Button</div>
+      <div class="sidebar-sub-item" onclick="showPage('conveyor')">Conveyor</div>
+      <div class="sidebar-sub-item" onclick="showPage('killbricks')">Killbricks</div>
+      <div class="sidebar-sub-item" onclick="showPage('elevator')">Elevator</div>
+      <!-- Modifiers nested dropdown -->
+      <div class="sidebar-sub-item" id="nav-modifiers" onclick="handleModifiers(event)">
+        Modifiers <span class="arrow">›</span>
+      </div>
+      <div class="sidebar-sub-sub" id="sub-modifiers">
+        <div class="sidebar-sub-sub-item" onclick="showPage('speed-modifier')">Speed Modifier</div>
+        <div class="sidebar-sub-sub-item" onclick="showPage('jump-modifier')">Jump Modifier</div>
+        <div class="sidebar-sub-sub-item" onclick="showPage('gravity-modifier')">Gravity Modifier</div>
+      </div>
+    </div>
+
   </aside>
 
   <main class="main">
     <div class="content">
-      <div class="breadcrumb"><span>⌂</span> <span>›</span> Introduction</div>
-      <h1>Introduction</h1>
-      <p>Welcome to the documentation page for Hexo's Abyssal Depths. This site provides all the necessary information regarding the building kit, game structure, setup instructions, and framework documentation.</p>
 
-      <h2 id="about-game">About the Game</h2>
-      <p>Hexo's Abyssal Depths is a tower-climbing obstacle game where players navigate through structured, skill-based challenges. The game is organized into three main area types:</p>
-      <ul>
-        <li><strong>Depths</strong> — The World 1 Areas</li>
-        <li><strong>Reaches</strong> — The World 2 Areas</li>
-        <li><strong>Sectors</strong> — The World 3 Areas</li>
-      </ul>
-      <p>Builders can use the official kit to design, test, and submit their own Towers for inclusion in the game.</p>
+      <!-- INTRODUCTION -->
+      <div class="page active" id="page-introduction">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> Introduction</div>
+        <h1>Introduction</h1>
+        <p>Welcome to the documentation page for Hexo's Abyssal Depths. This site provides all the necessary information regarding the building kit, game structure, setup instructions, and framework documentation.</p>
 
-      <h2 id="about-kit">About the Kit</h2>
-      <p>The Hexo's Abyssal Depths kit provides all the essential framework scripts, mechanics, and interactive client objects needed to build functional Towers, allowing creators to focus entirely on level design and gameplay structure.</p>
+        <h2 id="about-game">About the Game</h2>
+        <p>Hexo's Abyssal Depths is a tower-climbing obstacle game where players navigate through structured, skill-based challenges. The game is organized into three main area types:</p>
+        <ul>
+          <li><strong>Depths</strong> — The World 1 Areas</li>
+          <li><strong>Reaches</strong> — The World 2 Areas</li>
+          <li><strong>Sectors</strong> — The World 3 Areas</li>
+        </ul>
+        <p>Builders can use the official kit to design, test, and submit their own Towers for inclusion in the game.</p>
 
-      <h2 id="install">Installation Instructions</h2>
-      <p>The kit is distributed using a pre-made place file to make getting started as straightforward as possible. You can obtain it by:</p>
-      <ol>
-        <li>Opening the <a href="#">uncopylocked template place</a> on Roblox <strong>(Recommended)</strong></li>
-        <li>Downloading the <code>.rbxl</code> file from our <a href="#">GitHub releases page</a></li>
-      </ol>
+        <h2 id="about-kit">About the Kit</h2>
+        <p>The Hexo's Abyssal Depths kit provides all the essential framework scripts, mechanics, and interactive client objects needed to build functional Towers, allowing creators to focus entirely on level design and gameplay structure.</p>
 
-      <h2 id="update">Update Instructions</h2>
-      <p>If you are using a previous version of the kit, you can update to the latest version by visiting our <a href="#">GitHub releases page</a> and downloading the update kit associated with the latest release. Detailed instructions are included directly inside the update files.</p>
+        <h2 id="install">Installation Instructions</h2>
+        <p>The kit is distributed using a pre-made place file to make getting started as straightforward as possible. You can obtain it by:</p>
+        <ol>
+          <li>Opening the <a href="#">uncopylocked template place</a> on Roblox <strong>(Recommended)</strong></li>
+          <li>Downloading the <code>.rbxl</code> file from our <a href="#">GitHub releases page</a></li>
+        </ol>
 
-      <h2 id="navigation">Website Navigation</h2>
-      <p>You can navigate this site using the navigation bars at the top and side of the screen:</p>
-      <ul>
-        <li><strong>Top Bar</strong> — Switch between main documentation hubs (Overview, Objects, API, and Framework).</li>
-        <li><strong>Left Sidebar</strong> — Browse through specific categories, mechanics, and object pages within the selected hub.</li>
-      </ul>
+        <h2 id="update">Update Instructions</h2>
+        <p>If you are using a previous version of the kit, you can update to the latest version by visiting our <a href="#">GitHub releases page</a> and downloading the update kit associated with the latest release. Detailed instructions are included directly inside the update files.</p>
 
-      <h2 id="breakdown">Documentation Breakdown</h2>
+        <h2 id="navigation">Website Navigation</h2>
+        <p>You can navigate this site using the navigation bars at the top and side of the screen:</p>
+        <ul>
+          <li><strong>Top Bar</strong> — Switch between main documentation hubs (Overview, Objects, API, and Framework).</li>
+          <li><strong>Left Sidebar</strong> — Browse through specific categories, mechanics, and object pages within the selected hub.</li>
+        </ul>
 
-      <div class="doc-block">
-        <h3>Client Objects</h3>
-        <p>Contains documentation for every interactive gameplay object in the kit. Each page includes configuration settings, properties, description of behavior, and recommended usage within Towers.</p>
+        <h2 id="breakdown">Documentation Breakdown</h2>
+        <div class="doc-block">
+          <h3>Client Objects</h3>
+          <p>Contains documentation for every interactive gameplay object in the kit. Each page includes configuration settings, properties, description of behavior, and recommended usage within Towers.</p>
+        </div>
+        <div class="doc-block">
+          <h3>Global Configuration Documentation</h3>
+          <p>Covers universal settings and framework values that apply across entire Sectors or Reaches. These are documented separately for quick reference.</p>
+        </div>
+        <div class="doc-block">
+          <h3>API Documentation</h3>
+          <p>Provides information on the kit's underlying scripts and events. This section is designed for creators writing custom scripts or extending default mechanics, ensuring full compatibility with the main game framework.</p>
+        </div>
       </div>
 
-      <div class="doc-block">
-        <h3>Global Configuration Documentation</h3>
-        <p>Covers universal settings and framework values that apply across entire Sectors or Reaches. These are documented separately for quick reference.</p>
+      <!-- CLIENT OBJECTS -->
+      <div class="page" id="page-client-objects">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> Client Objects</div>
+        <h1>Client Objects</h1>
+        <p class="empty-state">Content coming soon.</p>
       </div>
 
-      <div class="doc-block">
-        <h3>API Documentation</h3>
-        <p>Provides information on the kit's underlying scripts and events. This section is designed for creators writing custom scripts or extending default mechanics, ensuring full compatibility with the main game framework.</p>
+      <!-- TELEPORTER -->
+      <div class="page" id="page-teleporter">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Teleporter</div>
+        <h1>Teleporter</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- FADING PLATFORM -->
+      <div class="page" id="page-fading-platform">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Fading Platform</div>
+        <h1>Fading Platform</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- BUTTON -->
+      <div class="page" id="page-button">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Button</div>
+        <h1>Button</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- CONVEYOR -->
+      <div class="page" id="page-conveyor">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Conveyor</div>
+        <h1>Conveyor</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- KILLBRICKS -->
+      <div class="page" id="page-killbricks">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Killbricks</div>
+        <h1>Killbricks</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- ELEVATOR -->
+      <div class="page" id="page-elevator">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Elevator</div>
+        <h1>Elevator</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- MODIFIERS -->
+      <div class="page" id="page-modifiers">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> Modifiers</div>
+        <h1>Modifiers</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- SPEED MODIFIER -->
+      <div class="page" id="page-speed-modifier">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> <a href="#" onclick="showPage('modifiers')">Modifiers</a> <span class="sep">›</span> Speed Modifier</div>
+        <h1>Speed Modifier</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- JUMP MODIFIER -->
+      <div class="page" id="page-jump-modifier">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> <a href="#" onclick="showPage('modifiers')">Modifiers</a> <span class="sep">›</span> Jump Modifier</div>
+        <h1>Jump Modifier</h1>
+        <p class="empty-state">Content coming soon.</p>
+      </div>
+
+      <!-- GRAVITY MODIFIER -->
+      <div class="page" id="page-gravity-modifier">
+        <div class="breadcrumb"><span>⌂</span> <span class="sep">›</span> <a href="#" onclick="showPage('client-objects')">Client Objects</a> <span class="sep">›</span> <a href="#" onclick="showPage('modifiers')">Modifiers</a> <span class="sep">›</span> Gravity Modifier</div>
+        <h1>Gravity Modifier</h1>
+        <p class="empty-state">Content coming soon.</p>
       </div>
 
     </div>
 
-    <div class="toc">
+    <div class="toc" id="toc-container">
       <div class="toc-title">On this page</div>
-      <a href="#about-game">About the Game</a>
-      <a href="#about-kit">About the Kit</a>
-      <a href="#install">Installation Instructions</a>
-      <a href="#update">Update Instructions</a>
-      <a href="#navigation">Website Navigation</a>
-      <a href="#breakdown">Documentation Breakdown</a>
+      <div id="toc-links">
+        <a href="#about-game">About the Game</a>
+        <a href="#about-kit">About the Kit</a>
+        <a href="#install">Installation Instructions</a>
+        <a href="#update">Update Instructions</a>
+        <a href="#navigation">Website Navigation</a>
+        <a href="#breakdown">Documentation Breakdown</a>
+      </div>
     </div>
   </main>
 </div>
+
+<script>
+  let clientObjectsOpen = false;
+  let modifiersOpen = false;
+
+  function clearAllActive() {
+    document.querySelectorAll('.sidebar-item, .sidebar-sub-item, .sidebar-sub-sub-item').forEach(el => {
+      el.classList.remove('active');
+    });
+  }
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + id);
+    if (target) target.classList.add('active');
+    document.getElementById('toc-links').innerHTML = '';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+
+    clearAllActive();
+
+    if (id === 'introduction') {
+      document.getElementById('nav-introduction').classList.add('active');
+      document.getElementById('toc-links').innerHTML = `
+        <a href="#about-game">About the Game</a>
+        <a href="#about-kit">About the Kit</a>
+        <a href="#install">Installation Instructions</a>
+        <a href="#update">Update Instructions</a>
+        <a href="#navigation">Website Navigation</a>
+        <a href="#breakdown">Documentation Breakdown</a>
+      `;
+    } else if (id === 'client-objects') {
+      document.getElementById('nav-client-objects').classList.add('active');
+    } else if (id === 'modifiers') {
+      document.querySelectorAll('.sidebar-sub-item').forEach(el => {
+        if (el.textContent.trim().startsWith('Modifiers')) el.classList.add('active');
+      });
+      ensureClientOpen();
+      ensureModifiersOpen();
+    } else if (['speed-modifier','jump-modifier','gravity-modifier'].includes(id)) {
+      document.querySelectorAll('.sidebar-sub-sub-item').forEach(el => {
+        const map = {'speed-modifier':'Speed Modifier','jump-modifier':'Jump Modifier','gravity-modifier':'Gravity Modifier'};
+        if (el.textContent.trim() === map[id]) el.classList.add('active');
+      });
+      ensureClientOpen();
+      ensureModifiersOpen();
+    } else {
+      const labelMap = {
+        'teleporter':'Teleporter','fading-platform':'Fading Platform','button':'Button',
+        'conveyor':'Conveyor','killbricks':'Killbricks','elevator':'Elevator'
+      };
+      document.querySelectorAll('.sidebar-sub-item').forEach(el => {
+        if (el.textContent.trim() === labelMap[id]) el.classList.add('active');
+      });
+      ensureClientOpen();
+    }
+  }
+
+  function ensureClientOpen() {
+    const sub = document.getElementById('sub-client-objects');
+    const nav = document.getElementById('nav-client-objects');
+    sub.classList.add('open');
+    nav.classList.add('open');
+    clientObjectsOpen = true;
+  }
+
+  function ensureModifiersOpen() {
+    const sub = document.getElementById('sub-modifiers');
+    const nav = document.getElementById('nav-modifiers');
+    sub.classList.add('open');
+    nav.classList.add('open');
+    modifiersOpen = true;
+  }
+
+  function handleClientObjects() {
+    clientObjectsOpen = !clientObjectsOpen;
+    const sub = document.getElementById('sub-client-objects');
+    const nav = document.getElementById('nav-client-objects');
+    sub.classList.toggle('open', clientObjectsOpen);
+    nav.classList.toggle('open', clientObjectsOpen);
+    showPage('client-objects');
+  }
+
+  function handleModifiers(e) {
+    e.stopPropagation();
+    modifiersOpen = !modifiersOpen;
+    const sub = document.getElementById('sub-modifiers');
+    const nav = document.getElementById('nav-modifiers');
+    sub.classList.toggle('open', modifiersOpen);
+    nav.classList.toggle('open', modifiersOpen);
+    showPage('modifiers');
+  }
+
+  document.getElementById('nav-introduction').classList.add('active');
+</script>
 
 </body>
 </html>
