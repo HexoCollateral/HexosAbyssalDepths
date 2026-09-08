@@ -400,6 +400,7 @@
 <aside class="sidebar">
 
   <div class="sidebar-item" id="snav-introduction" onclick="go('introduction')">Introduction</div>
+  <div class="sidebar-item" id="snav-submission-rules" onclick="go('submission-rules')">Tower Submission Rules</div>
 
   <div class="sidebar-item" id="snav-client-objects" onclick="toggleAndGo('co-sub','client-objects',this)">
     Client Objects <span class="arrow" id="arr-co">›</span>
@@ -471,6 +472,74 @@
     <div class="pnav-btn right" onclick="go('client-objects')">
       <span class="pnav-label">Next</span>
       <span class="pnav-title">Client Objects →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ TOWER SUBMISSION RULES ═══════════════════════════════ -->
+<div class="page" id="page-submission-rules">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span>Tower Submission Rules</div>
+  <h1>Tower Submission Guidelines</h1>
+  <p>Follow these guidelines when building and submitting a tower for inclusion in the game. Ensure your place and configuration comply with all requirements before submitting for review.</p>
+
+  <h2 id="sr-what">What to Include in Your Submission</h2>
+  <p>Provide all of the following details in your submission ticket:</p>
+  <ul>
+    <li><strong>Place Link</strong> — A direct URL to the public Roblox place containing your completed tower.</li>
+    <li><strong>Official Tower Name</strong> — The finalized title following the official naming rules.</li>
+    <li><strong>Proposed Difficulty</strong> — The intended difficulty rating for your tower.</li>
+    <li><strong>Credits</strong> — A list of all contributors including the primary builder, co-builders, and playtesters.</li>
+    <li><strong>Asset List</strong> — Audio IDs, custom meshes, or custom visual assets used throughout the build.</li>
+    <li><strong>Part Count</strong> — Total part count of the tower including the frame. Client Objects do not count toward this limit.</li>
+  </ul>
+
+  <h2 id="sr-place">Tower Place</h2>
+  <ul>
+    <li><strong>Public Accessibility</strong> — The place must be publicly accessible with no paid access fees, country restrictions, or age restrictions beyond Roblox's default 16+ lock.</li>
+    <li><strong>Required Testing Tools</strong> — Your place must include the Noclip and Heal tools bundled with the kit by default to facilitate verification and testing.</li>
+    <li><strong>Unrestricted Access</strong> — Keep the place open throughout the entire review process. Do not set it to private or change place permissions while a review is active.</li>
+  </ul>
+
+  <h2 id="sr-building">Tower Building</h2>
+  <ul>
+    <li><strong>Kit Integrity</strong> — All gameplay mechanics must use the default kit modules driven by attributes. Do not modify core client or server handler scripts.</li>
+    <li><strong>Performance Optimization</strong> — Keep part counts and unanchored physics objects optimized. Disable unnecessary collision on non-essential detail parts.</li>
+    <li><strong>Fair Gameplay</strong> — Obstacles, hazards, and mechanics must be clearly readable to the player. Unfair blind drops or untelegraphed killbricks are subject to rejection.</li>
+    <li><strong>Structural Consistency</strong> — Align floors cleanly and ensure all attributes are correctly assigned on interactable objects (<code>isElevator</code>, <code>isKillbrick</code>, <code>isFadingPlatform</code>, etc.).</li>
+    <li><strong>No Free Models</strong> — Free models are not permitted anywhere inside your tower. All assets must be original or sourced with explicit permission.</li>
+    <li><strong>Part Limit</strong> — Your tower must not exceed <strong>10,000 parts</strong>. Client Objects are excluded from this count.</li>
+    <li><strong>No Custom Scripts</strong> — Custom scripts and Custom Client Objects (CCOs) are not permitted unless you hold the <strong>Verified Tower Builder</strong> role, or are collaborating with someone who does.</li>
+  </ul>
+
+  <h2 id="sr-submission">Tower Submission</h2>
+  <ul>
+    <li><strong>Submission Process</strong> — Submit your place link and all required details through the designated community submission channel.</li>
+    <li><strong>Review Stages</strong> — Towers undergo verification for gameplay readability, physics stability, and attribute compliance.</li>
+    <li><strong>Locking the Build</strong> — Do not update or edit the submitted place while active testing is underway unless a reviewer explicitly requests changes.</li>
+    <li><strong>Re-submissions</strong> — If your tower is rejected or returned with requested changes, address every revision noted before re-submitting for a second review.</li>
+    <li><strong>No Duplicate Submissions</strong> — Do not repost a submission that is already under review. Reviews are conducted at the team's own pace — please be patient.</li>
+    <li><strong>Sincere Submissions Only</strong> — Do not submit joke towers, low-effort builds, or outdated projects that are not genuinely intended to pass review. These will be closed without feedback.</li>
+    <li><strong>One Active Submission</strong> — Only one tower submission per builder may be under review at a time. Wait for your current submission to be resolved before submitting another.</li>
+  </ul>
+
+  <h2 id="sr-naming">Tower Naming</h2>
+  <ul>
+    <li><strong>Required Prefix</strong> — The tower name must begin with <code>"Tower of"</code>, <code>"Citadel of"</code>, or <code>"Steeple of"</code>.</li>
+    <li><strong>Word Count</strong> — Excluding the prefix, the name must be between <strong>1 and 5 words</strong>.</li>
+    <li><strong>Appropriateness</strong> — Titles must fit the theme of the tower and comply with standard Roblox moderation guidelines.</li>
+    <li><strong>No Duplicate Names</strong> — Tower names must be unique. Check existing towers before finalizing your name to avoid conflicts.</li>
+  </ul>
+
+  <div class="callout yellow"><strong>CCO Notice:</strong> Custom Client Objects require the <strong>Verified Tower Builder</strong> role. Submissions containing unauthorized custom scripts will be rejected and may affect your standing in the community.</div>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('introduction')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Introduction</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('client-objects')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Tower Submission Rules →</span>
     </div>
   </div>
 </div>
@@ -944,6 +1013,7 @@
 <script>
 const tocData = {
   'introduction':     [['about-game','About the Game'],['about-kit','About the Kit'],['install','Installation Instructions'],['update','Update Instructions'],['navigation','Website Navigation'],['breakdown','Documentation Breakdown']],
+  'submission-rules': [['sr-what','What to Include'],['sr-place','Tower Place'],['sr-building','Tower Building'],['sr-submission','Tower Submission'],['sr-naming','Tower Naming']],
   'client-objects':   [['overview-list','Objects'],['how-attributes-work','How Attributes Work']],
   'teleporter':       [['tp-how','How It Works'],['tp-attrs-main','Teleporter Part Attributes'],['tp-attrs-dest','Destination Part Attributes']],
   'fading-platform':  [['fp-how','How It Works'],['fp-attrs','Attributes']],
