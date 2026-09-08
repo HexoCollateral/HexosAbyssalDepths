@@ -401,6 +401,7 @@
 
   <div class="sidebar-item" id="snav-introduction" onclick="go('introduction')">Introduction</div>
   <div class="sidebar-item" id="snav-submission-rules" onclick="go('submission-rules')">Tower Submission Rules</div>
+  <div class="sidebar-item" id="snav-building-roles" onclick="go('building-roles')">Building Roles</div>
 
   <div class="sidebar-item" id="snav-client-objects" onclick="toggleAndGo('co-sub','client-objects',this)">
     Client Objects <span class="arrow" id="arr-co">›</span>
@@ -540,6 +541,113 @@
     <div class="pnav-btn right" onclick="go('client-objects')">
       <span class="pnav-label">Next</span>
       <span class="pnav-title">Tower Submission Rules →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ BUILDING ROLES ═══════════════════════════════ -->
+<div class="page" id="page-building-roles">
+  <div class="breadcrumb"><span>⌂</span><span class="sep">›</span>Building Roles</div>
+  <h1>Building Roles</h1>
+  <p>Builder roles reflect a creator's track record within HAD. Each role is earned through curation milestones and unlocks additional privileges within the submission process.</p>
+
+  <h2 id="br-overview">Role Overview</h2>
+  <table class="attr-table">
+    <thead>
+      <tr>
+        <th>Role</th>
+        <th>Towers in Game</th>
+        <th>Total Pass Curation</th>
+        <th>CCO Access</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--text-heading);font-family:inherit;font-size:13.5px;white-space:nowrap;">Tower Builder</td>
+        <td style="color:var(--text-muted);font-size:13px;">—</td>
+        <td style="color:var(--text-muted);font-size:13px;">2</td>
+        <td style="color:#ff6b6b;font-size:13px;">No</td>
+      </tr>
+      <tr>
+        <td style="color:var(--text-heading);font-family:inherit;font-size:13.5px;white-space:nowrap;">Verified Tower Builder</td>
+        <td style="color:var(--text-muted);font-size:13px;">2</td>
+        <td style="color:var(--text-muted);font-size:13px;">5</td>
+        <td style="color:#7dce82;font-size:13px;">Yes</td>
+      </tr>
+      <tr>
+        <td style="color:var(--text-heading);font-family:inherit;font-size:13.5px;white-space:nowrap;">Elite Tower Builder</td>
+        <td style="color:var(--text-muted);font-size:13px;">6</td>
+        <td style="color:var(--text-muted);font-size:13px;">25</td>
+        <td style="color:#7dce82;font-size:13px;">Yes</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout blue"><strong>Note:</strong> Collabs with more than 3 contributors do not count toward personal curation milestones for any role.</div>
+
+  <h2 id="br-tower-builder">Tower Builder</h2>
+  <p>The entry-level builder role. Awarded once a creator has demonstrated consistent output through the curation process.</p>
+  <table class="attr-table">
+    <thead><tr><th>Requirement</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--text-heading);font-family:inherit;font-size:13.5px;">Pass Curation</td>
+        <td>Have <strong>2 towers</strong> pass curation. Collabs with more than 3 contributors do not count.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="color:var(--text-muted);font-size:13.5px;">Tower Builders may submit towers freely but do not have access to Custom Client Objects (CCOs).</p>
+
+  <h2 id="br-verified">Verified Tower Builder</h2>
+  <p>Awarded to builders with a proven track record of towers making it into the live game. Unlocks the ability to use and authorize Custom Client Objects.</p>
+  <table class="attr-table">
+    <thead><tr><th>Requirement</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--text-heading);font-family:inherit;font-size:13.5px;">Towers in Game</td>
+        <td>Have <strong>2 towers</strong> accepted and live in the game.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--text-heading);font-family:inherit;font-size:13.5px;">Pass Curation</td>
+        <td>Have a total of <strong>5 towers</strong> pass curation.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="color:var(--text-muted);font-size:13.5px;">Verified Tower Builders may use CCOs in their own submissions and can authorize CCO use for builders they collaborate with.</p>
+
+  <h2 id="br-elite">Elite Tower Builder</h2>
+  <p>The highest builder role, reserved for the most prolific and consistent contributors to HAD. Reflects a long-standing commitment to quality and volume.</p>
+  <table class="attr-table">
+    <thead><tr><th>Requirement</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--text-heading);font-family:inherit;font-size:13.5px;">Towers in Game</td>
+        <td>Have <strong>6 towers</strong> accepted and live in the game.</td>
+      </tr>
+      <tr>
+        <td style="color:var(--text-heading);font-family:inherit;font-size:13.5px;">Pass Curation</td>
+        <td>Have a total of <strong>25 towers</strong> pass curation.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="color:var(--text-muted);font-size:13.5px;">Elite Tower Builders retain all Verified privileges and are recognized as long-term pillars of the HAD building community.</p>
+
+  <h2 id="br-notes">General Notes</h2>
+  <ul>
+    <li>Roles are not self-assigned — they are reviewed and granted by the HAD team.</li>
+    <li>Misrepresenting your role or attempting to bypass CCO restrictions will result in submission privileges being revoked.</li>
+    <li>Curation counts are tracked per builder. In a collab, each contributor receives credit only if the collab has <strong>3 or fewer</strong> total contributors.</li>
+    <li>Roles are tied to your Roblox account. Name changes do not affect role status but must be reported to the team to keep records current.</li>
+  </ul>
+
+  <div class="page-nav">
+    <div class="pnav-btn" onclick="go('submission-rules')">
+      <span class="pnav-label">Previous</span>
+      <span class="pnav-title">← Tower Submission Rules</span>
+    </div>
+    <div class="pnav-btn right" onclick="go('client-objects')">
+      <span class="pnav-label">Next</span>
+      <span class="pnav-title">Building Roles →</span>
     </div>
   </div>
 </div>
@@ -1013,6 +1121,7 @@
 <script>
 const tocData = {
   'introduction':     [['about-game','About the Game'],['about-kit','About the Kit'],['install','Installation Instructions'],['update','Update Instructions'],['navigation','Website Navigation'],['breakdown','Documentation Breakdown']],
+  'building-roles': [['br-overview','Role Overview'],['br-tower-builder','Tower Builder'],['br-verified','Verified Tower Builder'],['br-elite','Elite Tower Builder'],['br-notes','General Notes']],
   'submission-rules': [['sr-what','What to Include'],['sr-place','Tower Place'],['sr-building','Tower Building'],['sr-submission','Tower Submission'],['sr-naming','Tower Naming']],
   'client-objects':   [['overview-list','Objects'],['how-attributes-work','How Attributes Work']],
   'teleporter':       [['tp-how','How It Works'],['tp-attrs-main','Teleporter Part Attributes'],['tp-attrs-dest','Destination Part Attributes']],
